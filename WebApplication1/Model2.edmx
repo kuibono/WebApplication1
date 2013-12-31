@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl" Namespace="Model2.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="Model2TargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="WebApplication1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="Model2Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Role" EntityType="WebApplication1.Role" />
+          <EntitySet Name="User" EntityType="WebApplication1.User" />
+          <EntitySet Name="Group" EntityType="WebApplication1.Group" />
+          <AssociationSet Name="GroupUser" Association="WebApplication1.GroupUser">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="RoleUser" Association="WebApplication1.RoleUser">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <EntitySet Name="Form" EntityType="WebApplication1.Form" />
+          <AssociationSet Name="GroupGroup" Association="WebApplication1.GroupGroup">
+            <End Role="Group" EntitySet="Group" />
+            <End Role="Group1" EntitySet="Group" />
+          </AssociationSet>
+          <EntitySet Name="Field" EntityType="WebApplication1.Field" />
+          <AssociationSet Name="FormField" Association="WebApplication1.FormField">
+            <End Role="Form" EntitySet="Form" />
+            <End Role="Field" EntitySet="Field" />
+          </AssociationSet>
+          <EntitySet Name="FieldValidate" EntityType="WebApplication1.FieldValidate" />
+          <AssociationSet Name="FieldFieldValidate" Association="WebApplication1.FieldFieldValidate">
+            <End Role="Field" EntitySet="Field" />
+            <End Role="FieldValidate" EntitySet="FieldValidate" />
+          </AssociationSet>
+          <EntitySet Name="Task" EntityType="WebApplication1.Task" />
+          <EntitySet Name="Step" EntityType="WebApplication1.Step" />
+          <AssociationSet Name="FormTask" Association="WebApplication1.FormTask">
+            <End Role="Form" EntitySet="Form" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+          <AssociationSet Name="TaskStep" Association="WebApplication1.TaskStep">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="Step" EntitySet="Step" />
+          </AssociationSet>
+          <AssociationSet Name="UserStep" Association="WebApplication1.UserStep">
+            <End Role="User" EntitySet="User" />
+            <End Role="Step" EntitySet="Step" />
+          </AssociationSet>
+          <AssociationSet Name="UserTask" Association="WebApplication1.UserTask">
+            <End Role="User" EntitySet="User" />
+            <End Role="Task" EntitySet="Task" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LoginName" Nullable="false" MaxLength="50" />
+          <NavigationProperty Name="Group" Relationship="WebApplication1.GroupUser" FromRole="User" ToRole="Group" />
+          <NavigationProperty Name="Roles" Relationship="WebApplication1.RoleUser" FromRole="User" ToRole="Role" />
+          <NavigationProperty Name="Task" Relationship="WebApplication1.UserTask" FromRole="User" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <NavigationProperty Name="Users" Relationship="WebApplication1.GroupUser" FromRole="Group" ToRole="User" />
+          <NavigationProperty Name="Parent" Relationship="WebApplication1.GroupGroup" FromRole="Group1" ToRole="Group" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <NavigationProperty Name="Users" Relationship="WebApplication1.RoleUser" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <Association Name="GroupUser">
+          <End Type="WebApplication1.Group" Role="Group" Multiplicity="1" />
+          <End Type="WebApplication1.User" Role="User" Multiplicity="*" />
+        </Association>
+        <Association Name="RoleUser">
+          <End Type="WebApplication1.Role" Role="Role" Multiplicity="*" />
+          <End Type="WebApplication1.User" Role="User" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Form">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="2000" />
+          <NavigationProperty Name="Fields" Relationship="WebApplication1.FormField" FromRole="Form" ToRole="Field" />
+        </EntityType>
+        <Association Name="GroupGroup">
+          <End Type="WebApplication1.Group" Role="Group" Multiplicity="1" />
+          <End Type="WebApplication1.Group" Role="Group1" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Field">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="50" />
+          <NavigationProperty Name="Form" Relationship="WebApplication1.FormField" FromRole="Field" ToRole="Form" />
+          <NavigationProperty Name="Validates" Relationship="WebApplication1.FieldFieldValidate" FromRole="Field" ToRole="FieldValidate" />
+          <Property Type="Int16" Name="Type" Nullable="false" />
+        </EntityType>
+        <Association Name="FormField">
+          <End Type="WebApplication1.Form" Role="Form" Multiplicity="1" />
+          <End Type="WebApplication1.Field" Role="Field" Multiplicity="*" />
+        </Association>
+        <EntityType Name="FieldValidate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Exp" Nullable="false" MaxLength="2000" />
+        </EntityType>
+        <Association Name="FieldFieldValidate">
+          <End Type="WebApplication1.Field" Role="Field" Multiplicity="1" />
+          <End Type="WebApplication1.FieldValidate" Role="FieldValidate" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="StartTime" Nullable="false" />
+          <Property Type="Int16" Name="Status" Nullable="false" />
+          <NavigationProperty Name="Form" Relationship="WebApplication1.FormTask" FromRole="Task" ToRole="Form" />
+          <NavigationProperty Name="Steps" Relationship="WebApplication1.TaskStep" FromRole="Task" ToRole="Step" />
+          <NavigationProperty Name="User" Relationship="WebApplication1.UserTask" FromRole="Task" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Step">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Boolean" Name="IsFinished" Nullable="false" />
+          <Property Type="DateTime" Name="StartTime" Nullable="false" />
+          <Property Type="DateTime" Name="FinishTime" />
+          <NavigationProperty Name="Task" Relationship="WebApplication1.TaskStep" FromRole="Step" ToRole="Task" />
+          <NavigationProperty Name="User" Relationship="WebApplication1.UserStep" FromRole="Step" ToRole="User" />
+        </EntityType>
+        <Association Name="FormTask">
+          <End Type="WebApplication1.Form" Role="Form" Multiplicity="1" />
+          <End Type="WebApplication1.Task" Role="Task" Multiplicity="*" />
+        </Association>
+        <Association Name="TaskStep">
+          <End Type="WebApplication1.Task" Role="Task" Multiplicity="1" />
+          <End Type="WebApplication1.Step" Role="Step" Multiplicity="*" />
+        </Association>
+        <Association Name="UserStep">
+          <End Type="WebApplication1.User" Role="User" Multiplicity="1" />
+          <End Type="WebApplication1.Step" Role="Step" Multiplicity="*" />
+        </Association>
+        <Association Name="UserTask">
+          <End Type="WebApplication1.User" Role="User" Multiplicity="1" />
+          <End Type="WebApplication1.Task" Role="Task" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="Model2" />
+        <Alias Key="Target" Value="Model2.Store" />
+        <EntityContainerMapping CdmEntityContainer="Model2Container" StorageEntityContainer="Model2TargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="Model2" >
+        <EntityTypeShape EntityType="WebApplication1.User" Width="1.5" PointX="4.875" PointY="5.875" Height="2.1725878906249996" />
+        <EntityTypeShape EntityType="WebApplication1.Group" Width="1.5" PointX="5" PointY="9" Height="1.7879850260416665" />
+        <EntityTypeShape EntityType="WebApplication1.Role" Width="1.5" PointX="7" PointY="6.5" Height="1.5956835937499996" />
+        <AssociationConnector Association="WebApplication1.GroupUser">
+          <ConnectorPoint PointX="5.6875" PointY="9" />
+          <ConnectorPoint PointX="5.6875" PointY="8.047587890625" />
+        </AssociationConnector>
+        <AssociationConnector Association="WebApplication1.RoleUser">
+          <ConnectorPoint PointX="7" PointY="7.297841796875" />
+          <ConnectorPoint PointX="6.375" PointY="7.297841796875" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="WebApplication1.Form" Width="1.5" PointX="0.625" PointY="3.375" Height="1.7879850260416665" />
+        <AssociationConnector Association="WebApplication1.GroupGroup">
+          <ConnectorPoint PointX="5.5319230769230767" PointY="10.787985026041667" />
+          <ConnectorPoint PointX="5.5319230769230767" PointY="11.037985026041667" />
+          <ConnectorPoint PointX="5.9784615384615378" PointY="11.037985026041667" />
+          <ConnectorPoint PointX="5.9784615384615378" PointY="10.787985026041667" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="WebApplication1.Field" Width="1.5" PointX="2.625" PointY="3.375" Height="2.1725878906249996" />
+        <AssociationConnector Association="WebApplication1.FormField">
+          <ConnectorPoint PointX="2.125" PointY="4.2689925130208337" />
+          <ConnectorPoint PointX="2.625" PointY="4.2689925130208337" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="WebApplication1.FieldValidate" Width="1.5" PointX="4.875" PointY="3.375" Height="1.5956835937499996" />
+        <AssociationConnector Association="WebApplication1.FieldFieldValidate">
+          <ConnectorPoint PointX="4.125" PointY="4.172841796875" />
+          <ConnectorPoint PointX="4.875" PointY="4.172841796875" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="WebApplication1.Task" Width="1.5" PointX="0.5" PointY="5.875" Height="1.7879850260416665" />
+        <EntityTypeShape EntityType="WebApplication1.Step" Width="1.5" PointX="2.5" PointY="5.875" Height="1.7879850260416665" />
+        <AssociationConnector Association="WebApplication1.FormTask">
+          <ConnectorPoint PointX="1.3125" PointY="5.1629850260416665" />
+          <ConnectorPoint PointX="1.3125" PointY="5.875" />
+        </AssociationConnector>
+        <AssociationConnector Association="WebApplication1.TaskStep">
+          <ConnectorPoint PointX="2" PointY="6.8651432291666667" />
+          <ConnectorPoint PointX="2.5" PointY="6.8651432291666667" />
+        </AssociationConnector>
+        <AssociationConnector Association="WebApplication1.UserStep">
+          <ConnectorPoint PointX="4.875" PointY="6.9612939453125" />
+          <ConnectorPoint PointX="4" PointY="6.9612939453125" />
+        </AssociationConnector>
+        <AssociationConnector Association="WebApplication1.UserTask">
+          <ConnectorPoint PointX="4.875" PointY="8.1749886067708335" />
+          <ConnectorPoint PointX="2" PointY="8.1749886067708335" />
+        </AssociationConnector>
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
